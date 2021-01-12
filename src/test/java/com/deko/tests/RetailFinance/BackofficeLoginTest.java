@@ -4,16 +4,13 @@ import com.deko.testing.robot.backoffice.BackofficeRobot;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import java.util.concurrent.TimeUnit;
 
 
 public class BackofficeLoginTest {
@@ -46,13 +43,14 @@ public class BackofficeLoginTest {
     }
 
     @Test
-    public void invalidLogin() {
+    public void invalidLogin() throws InterruptedException {
         backOfficeLoginPageLoadSuccess();
         driver.findElement(By.cssSelector("input[placeholder='Username']")).sendKeys("Patel.Aashna");
         driver.findElement(By.cssSelector("input[placeholder='Password']")).sendKeys("Deko20QA");
         driver.findElement(By.cssSelector(".btn.btn-sm.btn-primary")).click();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        String errorMessage = driver.findElement(By.cssSelector("p[data-ng-if='Response.Message']")).getText();
+        Thread.sleep(2000);
+        String errorMessage = driver.findElement(By.cssSelector(".message-container")).getText();
+        Thread.sleep(3000);
         String message = "Sorry, the details you provided were incorrect.";
         Assert.assertEquals(errorMessage, message);
     }
